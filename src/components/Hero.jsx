@@ -1,290 +1,216 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import nihalPhoto from "../assets/hero.png";
+import { useLayoutEffect, useRef } from "react";
+import { gsap, ScrollTrigger } from "../lib/gsap";
+import { scrollToTarget } from "../lib/scroll";
+import { site } from "../data/site";
+import { ArrowDown, ArrowUpRight } from "./Icons";
+import Signature from "./Signature";
 
-gsap.registerPlugin(ScrollTrigger);
+const IMAGE_SIZES = "(max-width: 767px) 86vw, 62vw";
 
 export default function Hero() {
-  const heroRef = useRef(null);
-  const titleRef = useRef(null);
-  const subRef = useRef(null);
-  const portraitRef = useRef(null);
-  const float1 = useRef(null);
-  const float2 = useRef(null);
-  const float3 = useRef(null);
-  const float4 = useRef(null);
-  const float5 = useRef(null);
-  const ringRef = useRef(null);
+  const rootRef = useRef(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return undefined;
 
-      tl.from(".hero-char", {
-        y: 120,
-        opacity: 0,
-        rotateX: -90,
-        stagger: 0.06,
-        duration: 1.1,
-      })
-        .from(
-          subRef.current,
-          { y: 40, opacity: 0, duration: 0.9 },
-          "-=0.5"
+    const mm = gsap.matchMedia();
+
+    const buildTimeline = ({ isDesktop }) => {
+      const q = gsap.utils.selector(root);
+      const portrait = q(".hero-portrait")[0];
+      const nameInner = q(".hero-name-inner");
+      const intro = q(".hero-intro")[0];
+      const meta = q(".hero-meta-top")[0];
+      const footer = q(".hero-footer")[0];
+      const cue = q(".hero-scroll")[0];
+      const halo = q(".hero-halo")[0];
+      const mobileSignature = q(".hero-signature-mobile")[0];
+
+      gsap.set(nameInner, { yPercent: 120 });
+      gsap.set(intro, { opacity: 0, y: isDesktop ? 36 : 22 });
+      gsap.set(meta, { opacity: 0, y: -12 });
+      gsap.set(footer, { opacity: 0 });
+      gsap.set(mobileSignature, { opacity: 0, y: 14 });
+      gsap.set(portrait, {
+        scale: isDesktop ? 1.58 : 1.42,
+        x: 0,
+        yPercent: isDesktop ? 4 : 8,
+      });
+
+      const timeline = gsap.timeline({
+        defaults: { ease: "none" },
+        scrollTrigger: {
+          trigger: root,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 0.65,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      timeline
+        .to(cue, { opacity: 0, duration: 0.12 }, 0)
+        .to(
+          portrait,
+          {
+            scale: 1,
+            x: isDesktop ? () => window.innerWidth * 0.19 : 0,
+            yPercent: 0,
+            duration: 0.92,
+            ease: "power1.out",
+          },
+          0.02
         )
-        .from(
-          ".hero-meta",
-          { y: 30, opacity: 0, stagger: 0.12, duration: 0.8 },
-          "-=0.5"
+        .to(halo, { opacity: 1, scale: 1.06, duration: 0.9 }, 0)
+        .to(meta, { opacity: 1, y: 0, duration: 0.22 }, 0.16)
+        .to(
+          nameInner,
+          {
+            yPercent: 0,
+            duration: 0.52,
+            stagger: 0.06,
+            ease: "power2.out",
+          },
+          0.25
         )
-        .from(
-          ".float-el",
-          { y: 40, opacity: 0, stagger: 0.1, duration: 0.8 },
-          "-=1"
-        )
-        .from(
-          ".scroll-indicator",
-          { opacity: 0, duration: 0.8 },
-          "-=0.3"
+        .to(intro, { opacity: 1, y: 0, duration: 0.28 }, 0.64);
+
+      if (isDesktop) {
+        timeline.to(footer, { opacity: 1, duration: 0.16 }, 0.8);
+      } else {
+        timeline.to(
+          mobileSignature,
+          { opacity: 1, y: 0, duration: 0.18 },
+          0.76
         );
-
-      gsap.to(titleRef.current, {
-        scale: 1.4,
-        y: -60,
-        opacity: 0.3,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      gsap.to(subRef.current, {
-        y: -100,
-        opacity: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "center top",
-          scrub: 1,
-        },
-      });
-
-      gsap.to(portraitRef.current, {
-        scale: 1.4,
-        y: -60,
-        opacity: 0.3,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      const parallaxEls = [
-        { el: float1.current, y: -80, rotate: 15 },
-        { el: float2.current, y: -120, rotate: -20 },
-        { el: float3.current, y: -60, rotate: 10 },
-        { el: float4.current, y: -140, rotate: -15 },
-        { el: float5.current, y: -90, rotate: 25 },
-      ];
-
-      parallaxEls.forEach(({ el, y, rotate }) => {
-        if (!el) return;
-        gsap.to(el, {
-          y,
-          rotate,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
-      });
-
-      if (ringRef.current) {
-        gsap.to(ringRef.current, {
-          rotate: 180,
-          y: -100,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1,
-          },
-        });
       }
-    });
 
-    return () => ctx.revert();
+      return timeline;
+    };
+
+    mm.add(
+      "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+      () => buildTimeline({ isDesktop: true })
+    );
+
+    mm.add(
+      "(max-width: 767.98px) and (prefers-reduced-motion: no-preference)",
+      () => buildTimeline({ isDesktop: false })
+    );
+
+    return () => mm.revert();
   }, []);
 
-  const name = "NIHAL";
+  const goTo = (event, href) => {
+    event.preventDefault();
+    scrollToTarget(href);
+    window.history.replaceState(null, "", href);
+  };
 
   return (
-    <section
-      ref={heroRef}
-      id="hero"
-      className="scene-3d relative h-screen w-full overflow-hidden flex items-center justify-center"
-    >
-      {/* Ambient glow orbs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-[0.08] blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-[var(--color-accent-dim)] opacity-[0.1] blur-[100px]" />
-      </div>
-
-      {/* Grid lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.04]">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-      </div>
-
-      {/* Floating 3D geometric elements */}
-      <div className="absolute top-[15%] left-[8%] float-el float-slow" ref={float1}>
-        <div className="w-16 h-16 rounded-lg border-2 border-[var(--color-accent)]/40 bg-[var(--color-accent)]/5 backdrop-blur-sm" style={{ transform: "rotate(45deg)" }} />
-      </div>
-
-      <div className="absolute top-[25%] right-[12%] float-el float-medium" ref={float2}>
-        <div className="w-12 h-12 rounded-full border-2 border-[var(--color-accent)]/50 bg-[var(--color-accent)]/10 backdrop-blur-sm" />
-      </div>
-
-      <div className="absolute bottom-[28%] left-[12%] float-el float-fast" ref={float3}>
-        <div className="w-10 h-10 rotate-12 border-2 border-white/20 bg-white/5 backdrop-blur-sm" />
-      </div>
-
-      <div className="absolute bottom-[20%] right-[8%] float-el float-slow" ref={float4}>
-        <div className="w-14 h-14 rounded-full border-2 border-white/15" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-2 h-2 rounded-full bg-[var(--color-accent)] glow-pulse" />
+    <section id="hero" ref={rootRef} className="hero" aria-label="Introduction">
+      <div className="hero-sticky">
+        <div className="hero-backdrop" aria-hidden="true">
+          <div className="hero-grid" />
+          <div className="hero-halo" />
+          <div className="hero-vignette" />
         </div>
-      </div>
 
-      <div className="absolute top-[45%] left-[5%] float-el float-medium" ref={float5}>
-        <div className="w-8 h-8 bg-[var(--color-accent)]/20 rotate-45 backdrop-blur-sm" />
-      </div>
+        <div className="hero-meta-top" aria-hidden="true">
+          <span className="eyebrow">Portfolio · 2026</span>
+          <span className="hero-meta-role">
+            Mechanical engineer / Roboticist / Researcher
+          </span>
+          <span className="eyebrow">Doha, Qatar</span>
+        </div>
 
-      {/* Rotating ring behind portrait */}
-      <div ref={ringRef} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <div className="w-[500px] h-[500px] rounded-full border border-[var(--color-accent)]/15 spin-slow" />
-      </div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <div className="w-[620px] h-[620px] rounded-full border border-white/5 spin-reverse" />
-      </div>
+        <h1 className="hero-wordmark" aria-label="Nihal Ashik">
+          <span className="hero-name-line" aria-hidden="true">
+            <span className="hero-name-inner">NIHAL</span>
+          </span>
+          <span className="hero-name-line" aria-hidden="true">
+            <span className="hero-name-inner">
+              ASHIK<span className="hero-name-dot">.</span>
+            </span>
+          </span>
+        </h1>
 
-      {/* Main content */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-12 items-center gap-4">
-          {/* Left: headline */}
-          <div className="col-span-12 lg:col-span-7 z-20">
-            <p className="hero-meta text-sm md:text-base tracking-[0.3em] uppercase text-[var(--color-text-dim)] mb-6 font-medium">
-              Roboticist &amp; Mechanical Engineer
-            </p>
-
-            <h1
-              ref={titleRef}
-              className="font-display font-black leading-[0.85] tracking-tighter text-[22vw] md:text-[14vw] will-change-transform"
-            >
-              <span className="block">
-                {name.split("").map((char, i) => (
-                  <span
-                    key={i}
-                    className="hero-char inline-block text-3d"
-                    style={{ transformOrigin: "bottom" }}
-                  >
-                    {char}
-                  </span>
-                ))}
-              </span>
-              <span className="block hero-meta text-[8vw] md:text-[5vw] font-extrabold text-3d-blue mt-2">
-                Ashik
-              </span>
-            </h1>
-
-            <p
-              ref={subRef}
-              className="hero-meta mt-8 text-lg md:text-2xl text-[var(--color-text-dim)] max-w-xl font-light leading-relaxed"
-            >
-              Inventing AI-powered robotics and{" "}
-              <span className="text-[var(--color-accent)] font-medium">
-                intelligent sorting systems
-              </span>{" "}
-              that redefine logistics.
-            </p>
-
-            <div className="hero-meta mt-10 flex items-center gap-6">
-              <a
-                href="#work"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector("#work")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="group relative overflow-hidden rounded-full bg-[var(--color-accent)] text-white px-8 py-3 text-sm font-semibold tracking-wide transition-all duration-300 hover:shadow-lg hover:shadow-[var(--color-accent)]/40"
-              >
-                <span className="relative z-10">View Work</span>
-              </a>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="text-sm font-semibold tracking-wide text-white/70 hover:text-white transition-colors"
-              >
-                Get in touch →
-              </a>
-            </div>
-          </div>
-
-          {/* Center: portrait */}
-          <div className="col-span-12 lg:col-span-5 flex justify-center lg:justify-end mt-8 lg:mt-0">
-            <div
-              ref={portraitRef}
-              className="relative will-change-transform"
-            >
-              <div className="relative float-medium">
-                {/* Glow behind portrait */}
-                <div className="absolute inset-0 bg-[var(--color-accent)]/20 blur-[80px] rounded-full scale-90" />
-                <img
-                  src={nihalPhoto}
-                  alt="Nihal Ashik"
-                  className="relative w-[300px] h-[300px] md:w-[420px] md:h-[420px] lg:w-[460px] lg:h-[460px] object-cover object-top rounded-3xl"
-                  style={{ filter: "drop-shadow(0 20px 60px rgba(59, 130, 246, 0.25))" }}
-                  onError={(e) => {
-                    e.currentTarget.src =
-                      "https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=portrait%20of%20a%20young%20south%20asian%20man%20with%20curly%20hair%20wearing%20dark%20blue%20shirt%2C%20professional%20engineering%20student%2C%20clean%20background%2C%20cinematic%20lighting&image_size=portrait_4_3";
-                  }}
-                />
-              </div>
-            </div>
+        <div className="hero-portrait-wrap">
+          <div className="hero-portrait">
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/images/portrait-600.webp 600w, /images/portrait-900.webp 900w, /images/portrait-1254.webp 1254w"
+                sizes={IMAGE_SIZES}
+              />
+              <img
+                src="/images/portrait-900.webp"
+                alt="Nihal Ashik, wearing a dark shirt and making a peace sign."
+                width="1254"
+                height="1254"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                onLoad={() => ScrollTrigger.refresh()}
+              />
+            </picture>
+            <span className="hero-portrait-tag" aria-hidden="true">
+              N.A · 2026
+            </span>
           </div>
         </div>
-      </div>
 
-      {/* Scroll indicator */}
-      <div className="scroll-indicator absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-        <div className="w-10 h-10 rounded-full bg-[var(--color-accent)] flex items-center justify-center bounce-down">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 5v14M5 12l7 7 7-7" />
-          </svg>
+        <div className="hero-intro">
+          <p className="hero-tagline">
+            I turn ideas into <em>working things.</em>
+          </p>
+          <p className="hero-bio">
+            Mechanical engineering student at Qatar University. I build systems
+            that move, sense, and solve, then share what I learn.
+          </p>
+          <div className="hero-actions">
+            <a
+              className="hero-link"
+              href="#work"
+              onClick={(event) => goTo(event, "#work")}
+            >
+              Selected work
+              <ArrowUpRight size={15} />
+            </a>
+            <a
+              className="hero-link hero-link--muted"
+              href="#contact"
+              onClick={(event) => goTo(event, "#contact")}
+            >
+              Get in touch
+            </a>
+          </div>
+          <Signature className="hero-signature" />
         </div>
-        <span className="text-[10px] tracking-[0.3em] uppercase text-[var(--color-text-mute)]">
-          Scroll
-        </span>
+
+        <Signature className="hero-signature-mobile" />
+
+        <div className="hero-footer" aria-hidden="true">
+          <span>25.2854° N / 51.5310° E</span>
+          <span className="hero-footer-status">
+            <span className="status-dot" />
+            {site.availability}
+          </span>
+          <span>Built with intent</span>
+        </div>
+
+        <a
+          className="hero-scroll"
+          href="#about"
+          onClick={(event) => goTo(event, "#about")}
+          aria-label="Scroll to about Nihal Ashik"
+        >
+          <span>Scroll to explore</span>
+          <span className="hero-scroll-line" aria-hidden="true">
+            <ArrowDown size={13} />
+          </span>
+        </a>
       </div>
     </section>
   );

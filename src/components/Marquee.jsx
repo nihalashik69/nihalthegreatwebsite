@@ -1,15 +1,34 @@
-export default function Marquee({ text = "ROBOTICS * AI * ENGINEERING * RESEARCH * ", className = "" }) {
-  const content = text.repeat(6);
+import { marqueeItems } from "../data/site";
+
+function MarqueeGroup({ items, hidden }) {
   return (
-    <div className={`relative overflow-hidden border-y border-[var(--color-line)] py-6 md:py-8 ${className}`}>
-      <div className="flex whitespace-nowrap animate-marquee">
-        <span className="font-display text-4xl md:text-6xl font-bold text-[var(--color-text)] mr-8">
-          {content}
+    <div className="marquee-group" aria-hidden={hidden || undefined}>
+      {items.map((item) => (
+        <span className="marquee-item" key={item}>
+          {item}
+          <span className="marquee-star" aria-hidden="true">
+            ✳
+          </span>
         </span>
-        <span className="font-display text-4xl md:text-6xl font-bold text-[var(--color-accent)] mr-8">
-          {content}
-        </span>
+      ))}
+    </div>
+  );
+}
+
+export default function Marquee({ className = "" }) {
+  return (
+    <div className={`marquee ${className}`}>
+      <div className="marquee-viewport">
+        <div className="marquee-track" aria-hidden="true">
+          <MarqueeGroup items={marqueeItems} />
+          <MarqueeGroup items={marqueeItems} hidden />
+        </div>
       </div>
+      <ul className="sr-only">
+        {marqueeItems.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -1,145 +1,143 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import { site } from "../data/site";
+import { useReveal } from "../hooks/useReveal";
+import { scrollToTop } from "../lib/scroll";
+import SectionHeader from "./SectionHeader";
+import Signature from "./Signature";
+import {
+  ArrowUp,
+  ArrowUpRight,
+  GitHub,
+  LinkedIn,
+  Mail,
+  MapPin,
+} from "./Icons";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const socials = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/nihal-ashik/", handle: "/in/nihal-ashik" },
-  { label: "Email", href: "mailto:nihalashikmm@gmail.com", handle: "nihalashikmm@gmail.com" },
-  { label: "Location", href: "#", handle: "Doha, Qatar" },
-];
+const currentYear = new Date().getFullYear();
 
 export default function Contact() {
   const sectionRef = useRef(null);
-  const bigTextRef = useRef(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".contact-char",
-        { y: 100, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.04,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: bigTextRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-
-      gsap.fromTo(
-        ".social-row",
-        { x: -60, opacity: 0 },
-        {
-          x: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".social-list",
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const headline = "Let's build something.";
+  useReveal(sectionRef);
 
   return (
-    <section
-      ref={sectionRef}
-      id="contact"
-      className="relative w-full min-h-screen flex flex-col justify-center py-32 px-6 md:px-12 overflow-hidden"
-    >
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-[0.07] blur-[120px]"
-          style={{ background: "radial-gradient(circle, var(--color-accent) 0%, transparent 70%)" }}
+    <footer id="contact" ref={sectionRef} className="contact">
+      <span className="contact-watermark" aria-hidden="true">
+        NIHAL ASHIK
+      </span>
+
+      <div className="shell contact-shell">
+        <SectionHeader
+          index="06"
+          label="Contact"
+          aside={site.availability}
         />
-      </div>
 
-      <div className="max-w-[1600px] mx-auto w-full relative z-10">
-        <div className="flex items-center justify-center gap-4 mb-12">
-          <span className="text-sm font-mono text-[var(--color-accent)] tracking-widest">
-            (04)
-          </span>
-          <span className="h-px w-12 bg-[var(--color-line)]" />
-          <span className="text-sm tracking-[0.3em] uppercase text-[var(--color-text-mute)]">
-            Get in touch
-          </span>
-        </div>
+        <div className="contact-main">
+          <p className="contact-kicker" data-reveal>
+            Have a problem worth solving?
+          </p>
 
-        <h2
-          ref={bigTextRef}
-          className="font-display text-[14vw] md:text-[12vw] font-bold leading-[0.9] tracking-tighter mb-12 text-center"
-        >
-          {headline.split("").map((char, i) => (
-            <span
-              key={i}
-              className="contact-char inline-block"
-              style={{ color: char === "." ? "var(--color-accent)" : undefined }}
-            >
-              {char === " " ? "\u00A0" : char}
-            </span>
-          ))}
-        </h2>
+          <h2 className="contact-heading" data-reveal>
+            Let&rsquo;s make
+            <br />
+            something <em>that works.</em>
+          </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
-          <div className="text-center">
-            <p className="text-[var(--color-text-dim)] text-lg leading-relaxed mb-8 max-w-md mx-auto">
-              Open to research collaborations, robotics projects, and
-              engineering opportunities. Let's build something that solves a
-              real problem.
-            </p>
+          <p className="contact-copy" data-reveal>
+            Research collaborations, engineering problems, or something that
+            does not have a name yet. Tell me what you are working on.
+          </p>
+
+          <a
+            className="contact-email"
+            href={`mailto:${site.email}`}
+            data-reveal
+          >
+            <span>{site.email}</span>
+            <ArrowUpRight size={22} />
+          </a>
+
+          <div className="contact-actions" data-reveal>
+            <a className="btn btn-primary" href={`mailto:${site.email}`}>
+              Start a conversation
+              <Mail size={15} />
+            </a>
             <a
-              href="mailto:nihalashikmm@gmail.com"
-              className="group inline-flex items-center gap-3 text-2xl md:text-3xl font-display font-bold text-white hover:text-[var(--color-accent)] transition-colors duration-300"
+              className="btn btn-ghost"
+              href={site.linkedin}
+              target="_blank"
+              rel="noreferrer noopener"
             >
-              nihalashikmm@gmail.com
-              <span className="inline-block group-hover:translate-x-2 transition-transform duration-300">
-                →
-              </span>
+              LinkedIn
+              <ArrowUpRight size={14} />
             </a>
           </div>
+        </div>
 
-          <div className="social-list max-w-md mx-auto w-full">
-            {socials.map((s, i) => (
-              <a
-                key={i}
-                href={s.href}
-                className="social-row group flex items-center justify-between py-5 border-b border-[var(--color-line)] hover:border-[var(--color-accent)] transition-colors duration-300"
-              >
-                <span className="text-lg font-display font-semibold text-white group-hover:text-[var(--color-accent)] transition-colors">
-                  {s.label}
-                </span>
-                <span className="text-sm text-[var(--color-text-mute)] group-hover:text-[var(--color-text-dim)] transition-colors">
-                  {s.handle} →
-                </span>
-              </a>
-            ))}
+        <div className="contact-meta">
+          <a
+            className="contact-location"
+            href="https://www.google.com/maps?q=Doha,+Qatar"
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="Doha, Qatar on Google Maps"
+          >
+            <MapPin size={15} />
+            <span>Doha, Qatar · 25.2854° N / 51.5310° E</span>
+            <ArrowUpRight size={13} />
+          </a>
+
+          <div className="contact-socials" role="group" aria-label="Social links">
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Nihal Ashik on GitHub"
+            >
+              <GitHub size={16} />
+              GitHub
+            </a>
+            <a
+              href={site.linkedin}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Nihal Ashik on LinkedIn"
+            >
+              <LinkedIn size={16} />
+              LinkedIn
+            </a>
+            <a href={`mailto:${site.email}`} aria-label="Email Nihal Ashik">
+              <Mail size={16} />
+              Email
+            </a>
           </div>
         </div>
 
-        <footer className="flex flex-col md:flex-row items-center justify-center gap-6 pt-12 border-t border-[var(--color-line)]">
-          <p className="text-sm text-[var(--color-text-mute)]">
-            © 2025 Nihal Ashik. Mechanical Engineering @ Qatar University.
-          </p>
-          <div className="flex items-center gap-2 text-sm text-[var(--color-text-mute)]">
-            <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] glow-pulse" />
-            Open to opportunities
+        <div className="site-footer">
+          <div className="footer-brand">
+            <Signature />
+            <p>
+              Mechanical engineer, roboticist
+              <br />& researcher. Doha, Qatar.
+            </p>
           </div>
-        </footer>
+
+          <p className="footer-copy">
+            © {currentYear} Nihal Ashik
+            <span aria-hidden="true"> · </span>
+            Designed and built from scratch.
+          </p>
+
+          <button
+            type="button"
+            className="footer-top"
+            onClick={() => scrollToTop()}
+          >
+            Back to top
+            <ArrowUp size={14} />
+          </button>
+        </div>
       </div>
-    </section>
+    </footer>
   );
 }

@@ -1,0 +1,21 @@
+{
+  "name": "Nihal Ashik Portfolio",
+  "short_name": "Nihal Ashik",
+  "description": "Mechanical engineer, roboticist, researcher and maker. Selected work from Doha, Qatar.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#080a0e",
+  "theme_color": "#080a0e",
+  "icons": [
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

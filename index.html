@@ -2,16 +2,212 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <script>
+      document.documentElement.dataset.motion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches
+        ? "off"
+        : "on";
+    </script>
+
+    <title>Nihal Ashik | Mechanical Engineer, Roboticist & Researcher</title>
+    <meta
+      name="description"
+      content="Nihal Ashik is a mechanical engineering student, roboticist and researcher at Qatar University. Explore his work across robotics, materials, product design and making."
+    />
+    <meta name="author" content="Nihal Ashik" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#080a0e" />
+
+    <link rel="canonical" href="https://www.nihalashik.tech" />
+
+    <!-- Social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://www.nihalashik.tech" />
+    <meta
+      property="og:title"
+      content="Nihal Ashik | Mechanical Engineer, Roboticist & Researcher"
+    />
+    <meta
+      property="og:description"
+      content="Mechanical engineering, robotics, research and making. Selected work from Doha, Qatar."
+    />
+    <meta
+      property="og:image"
+      content="https://www.nihalashik.tech/og-image.jpg"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Nihal Ashik, mechanical engineer, roboticist and researcher."
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Nihal Ashik | Mechanical Engineer, Roboticist & Researcher"
+    />
+    <meta
+      name="twitter:description"
+      content="Mechanical engineering, robotics, research and making. Selected work from Doha, Qatar."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.nihalashik.tech/og-image.jpg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Nihal Ashik, mechanical engineer, roboticist and researcher."
+    />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Nihal Ashik — Mechanical Engineering Student at Qatar University, Roboticist & Researcher. M.A.S.H inventor, ITEX 2025 Gold Medalist, QRDI Rising Innovator." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-    <title>Nihal Ashik — Roboticist & Mechanical Engineer</title>
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon-32.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Critical assets -->
+    <link
+      rel="preload"
+      href="/fonts/space-grotesk-300-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-300-600-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/webp"
+      href="/images/portrait-900.webp"
+      imagesrcset="/images/portrait-600.webp 600w, /images/portrait-900.webp 900w, /images/portrait-1254.webp 1254w"
+      imagesizes="(max-width: 767px) 86vw, 62vw"
+      fetchpriority="high"
+    />
+
+    <style>
+      html {
+        background: #080a0e;
+      }
+
+      body {
+        margin: 0;
+      }
+    </style>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "url": "https://www.nihalashik.tech",
+        "name": "Nihal Ashik | Mechanical Engineer, Roboticist & Researcher",
+        "mainEntity": {
+          "@type": "Person",
+          "name": "Nihal Ashik",
+          "url": "https://www.nihalashik.tech",
+          "image": "https://www.nihalashik.tech/og-image.jpg",
+          "jobTitle": "Mechanical Engineering Student & Researcher",
+          "description": "Mechanical engineering student, roboticist, researcher and maker at Qatar University.",
+          "email": "mailto:nihalashikmm@gmail.com",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Doha",
+            "addressCountry": "QA"
+          },
+          "affiliation": {
+            "@type": "CollegeOrUniversity",
+            "name": "Qatar University"
+          },
+          "knowsAbout": [
+            "Mechanical engineering",
+            "Robotics",
+            "Computer vision",
+            "Nanomaterials",
+            "Additive manufacturing",
+            "Product design",
+            "Fabrication"
+          ],
+          "award": [
+            "Gold Medal, ITEX 2025",
+            "Rising Innovators Award, Web Summit Qatar 2025",
+            "Third Place, National Innovation Olympiad 2023"
+          ],
+          "sameAs": [
+            "https://www.linkedin.com/in/nihal-ashik/",
+            "https://github.com/nihalashik69"
+          ]
+        }
+      }
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
+
+    <noscript>
+      <div
+        style="
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          display: grid;
+          place-items: center;
+          padding: 2rem;
+          background: #080a0e;
+          color: #ece9e2;
+          font-family: system-ui, -apple-system, sans-serif;
+          text-align: center;
+        "
+      >
+        <div style="max-width: 34rem">
+          <p
+            style="
+              margin: 0 0 1rem;
+              font-size: 0.75rem;
+              letter-spacing: 0.18em;
+              text-transform: uppercase;
+              color: #858892;
+            "
+          >
+            Nihal Ashik
+          </p>
+          <p style="margin: 0 0 1.25rem; font-size: 1.4rem; line-height: 1.4">
+            This site uses JavaScript for its cinematic scroll experience.
+          </p>
+          <p style="margin: 0; line-height: 1.7; color: #b7b8b3">
+            You can reach Nihal directly at
+            <a
+              href="mailto:nihalashikmm@gmail.com"
+              style="color: #6a96ff; text-decoration: underline"
+              >nihalashikmm@gmail.com</a
+            >.
+          </p>
+        </div>
+      </div>
+    </noscript>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
